@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pragma.backend.application.services.RestauranteService;
+import com.pragma.backend.domain.exceptions.UserNotOwnerException;
 import com.pragma.backend.domain.models.Restaurante;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,20 +28,20 @@ public class RestauranteController {
 		this.restauranteService = restauranteService;
 	}
 
-	@Operation(summary = "Crear un nuevo Propietario", description = "Guarda un nuevo propietario en la base de datos.")
-	@ApiResponse(responseCode = "200", description = "Propietario guardada exitosamente")
+	@Operation(summary = "Crear un nuevo Restaurante", description = "Guarda un nuevo Restaurante en la base de datos.")
+	@ApiResponse(responseCode = "200", description = "Restaurante guardado exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PostMapping("/guardar")
-	public ResponseEntity<?> guardarPropietario(@Valid @RequestBody Restaurante restaurante) {
+	public ResponseEntity<?> guardarRestaurante(@Valid @RequestBody Restaurante restaurante) {
 
 		try {
 			LOGGUER.info("Inicio Creacion de Restaurante");
-			Restaurante propietarioBd = restauranteService.createRestaurante(restaurante);
+			Restaurante restauranteBd = restauranteService.createRestaurante(restaurante);
 
-			return ResponseEntity.ok(propietarioBd);
-//		} catch (UnderageException e) {
-//			LOGGUER.error("Ocurrio un problema: " + e.getMessage());
-//			return ResponseEntity.internalServerError().body(e.getMessage());
+			return ResponseEntity.ok(restauranteBd);
+		} catch (UserNotOwnerException e) {
+			LOGGUER.error("Ocurrio un problema: " + e.getMessage());
+			return ResponseEntity.internalServerError().body(e.getMessage());
 		} catch (Exception e) {
 			LOGGUER.error("Ocurrio un error, descripcion del error: " + e.getMessage());
 			return ResponseEntity.internalServerError().body("Ocurrio un error en el servidor");
