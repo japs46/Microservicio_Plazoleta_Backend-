@@ -24,13 +24,13 @@ public class RestauranteEntity {
 	@Column(nullable = false)
     private final String direccion;
     
-	@Column(nullable = false)
+	@Column(length = 13, nullable = false)
     private final String telefono;
     
-    @Column(name = "url_logo")
+    @Column(nullable = false, name = "url_logo")
     private final String urlLogo;
     
-    @Column(nullable = false)
+    @Column(nullable = false,name = "id_usuario_propietario")
     private final Long idUsuarioPropietario;
 
 	public RestauranteEntity() {
