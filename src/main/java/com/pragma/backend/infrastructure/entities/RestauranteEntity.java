@@ -1,10 +1,14 @@
 package com.pragma.backend.infrastructure.entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,6 +36,9 @@ public class RestauranteEntity {
     
     @Column(nullable = false,name = "id_usuario_propietario")
     private final Long idUsuarioPropietario;
+    
+    @OneToMany(mappedBy = "restauranteEntity", cascade = CascadeType.ALL)
+    private List<PlatoEntity> platos;
 
 	public RestauranteEntity() {
 		this.id = null;

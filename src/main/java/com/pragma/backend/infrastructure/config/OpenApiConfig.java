@@ -11,7 +11,7 @@ public class OpenApiConfig {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
-		return new OpenAPI().info(new Info().title("Api Restaurantes").version("1.0")
-				.description("Documentación de la API para gestionar Restaurantes"));
+		return new OpenAPI().info(new Info().title("Api Plazoletas").version("1.0")
+				.description("Documentación de la API para gestionar Restaurantes de la Plazoleta"));
 	}
 }

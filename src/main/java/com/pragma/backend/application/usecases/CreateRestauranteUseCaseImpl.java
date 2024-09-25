@@ -22,8 +22,6 @@ public class CreateRestauranteUseCaseImpl implements CreateRestauranteUseCase{
 		this.usuarioExternalServicePort = usuarioExternalServicePort;
 	}
 	
-	
-
 	@Override
 	public Restaurante createRestaurante(Restaurante restaurante) {
 		
