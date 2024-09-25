@@ -3,6 +3,8 @@ package com.pragma.backend.infrastructure.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,5 +49,21 @@ public class RestauranteController {
 			return ResponseEntity.internalServerError().body("Ocurrio un error en el servidor");
 		}
 
+	}
+	
+	@GetMapping("/buscarPorIdPropietario/{idPropietario}")
+	public ResponseEntity<?> buscarRestaurantePorPropietario(@PathVariable Long idPropietario){
+		try {
+			LOGGUER.info("Inicio busqueda restaurante por id del propetario");
+			
+			Restaurante restauranteBd = restauranteService.obtenerRestaurantePorIdPropietario(idPropietario);
+					
+			return ResponseEntity.ok(restauranteBd);
+			
+		} catch (Exception e) {
+			LOGGUER.error("Ocurrio un error, descripcion del error: " + e.getMessage());
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+		
 	}
 }

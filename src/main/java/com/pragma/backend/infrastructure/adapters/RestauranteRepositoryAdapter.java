@@ -1,5 +1,7 @@
 package com.pragma.backend.infrastructure.adapters;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.pragma.backend.domain.models.Restaurante;
@@ -21,6 +23,11 @@ public class RestauranteRepositoryAdapter implements RestauranteRepositoryPort{
 	public Restaurante save(Restaurante restaurante) {
 		RestauranteEntity restauranteEntity = RestauranteMapper.toEntity(restaurante);
 		return RestauranteMapper.toDomain(restauranteEntityRepository.save(restauranteEntity));
+	}
+
+	@Override
+	public Optional<Restaurante> findByIdPropietario(Long id) {
+		return restauranteEntityRepository.findByIdUsuarioPropietario(id).map(RestauranteMapper::toDomain);
 	}
 
 }
