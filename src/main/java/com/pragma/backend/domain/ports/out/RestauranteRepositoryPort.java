@@ -8,5 +8,7 @@ public interface RestauranteRepositoryPort {
 
 	public Restaurante save(Restaurante restaurante);
 	
+	public Optional<Restaurante> findById(Long id);
+	
 	public Optional<Restaurante> findByIdPropietario(Long id);
 }

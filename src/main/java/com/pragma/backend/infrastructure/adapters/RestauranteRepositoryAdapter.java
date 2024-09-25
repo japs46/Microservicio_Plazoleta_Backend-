@@ -30,4 +30,9 @@ public class RestauranteRepositoryAdapter implements RestauranteRepositoryPort{
 		return restauranteEntityRepository.findByIdUsuarioPropietario(id).map(RestauranteMapper::toDomain);
 	}
 
+	@Override
+	public Optional<Restaurante> findById(Long id) {
+		return restauranteEntityRepository.findById(id).map(RestauranteMapper::toDomain);
+	}
+
 }

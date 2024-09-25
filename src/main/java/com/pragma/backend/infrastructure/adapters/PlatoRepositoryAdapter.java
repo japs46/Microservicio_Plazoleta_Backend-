@@ -1,5 +1,7 @@
 package com.pragma.backend.infrastructure.adapters;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.pragma.backend.domain.models.Plato;
@@ -21,6 +23,11 @@ public class PlatoRepositoryAdapter implements PlatoRepositoryPort{
 	public Plato save(Plato plato) {
 		PlatoEntity paltoEntity = PlatoMapper.toEntity(plato);
 		return PlatoMapper.toDomain(platoEntityRepository.save(paltoEntity));
+	}
+
+	@Override
+	public Optional<Plato> findById(Long id) {
+		return platoEntityRepository.findById(id).map(PlatoMapper::toDomain);
 	}
 
 }

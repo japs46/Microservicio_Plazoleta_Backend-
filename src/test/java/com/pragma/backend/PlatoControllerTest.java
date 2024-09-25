@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pragma.backend.application.services.PlatoService;
+import com.pragma.backend.domain.models.ModificarPlato;
 import com.pragma.backend.domain.models.Plato;
 import com.pragma.backend.domain.models.Restaurante;
 import com.pragma.backend.infrastructure.controllers.PlatoController;
@@ -93,5 +95,34 @@ public class PlatoControllerTest {
 	            .content(objectMapper.writeValueAsString(plato)))
 	            .andExpect(status().isInternalServerError())
 	            .andExpect(jsonPath("$").value("Ocurrio un inconveniente: Error interno"));
+	}
+	
+	@Test
+    void modificarPlato_ValidData_ReturnsOk() throws Exception {
+        ModificarPlato modificarPlato = new ModificarPlato(1L, 15000, "Nueva descripcion");
+        Plato platoModificado = new Plato(1L, "Plato Modificado", 15000, "Nueva descripcion", 
+                                          "http://imagen.com", "Categoria", true, 2L, null);
+
+        when(platoService.modifyPlato(any(ModificarPlato.class))).thenReturn(platoModificado);
+
+        mockMvc.perform(put("/api/platos/modificar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(modificarPlato)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.descripcion").value("Nueva descripcion"));
+    }
+	
+	@Test
+	void modificarPlato_InvalidData_ReturnsBadRequest() throws Exception {
+	    ModificarPlato modificarPlato = new ModificarPlato(null, 5000, "descrip"); // Id nulo, precio negativo, descripción vacía
+
+	    mockMvc.perform(put("/api/platos/modificar")
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .content(objectMapper.writeValueAsString(modificarPlato)))
+	            .andExpect(status().isBadRequest())
+	            .andExpect(jsonPath("$.message").value("Validacion Fallida"))
+	            .andExpect(jsonPath("$.errores[0].campo").value("id"))
+	            .andExpect(jsonPath("$.errores[0].errorMensaje").value("El ID no puede ser vacio."));
 	}
 }
