@@ -28,4 +28,17 @@ public class RetrieveRestauranteUseCaseImpl implements RetrieveRestauranteUseCas
 		return restauranteRepositoryPort.findByIdPropietario(idPropietario).orElseThrow(()-> new NullPointerException("El usuario no es propietario de ningun restaurante."));
 	}
 
+	@Override
+	public Restaurante obtenerRestaurantePorId(Long id) {
+		
+		if (id == null) {
+	        throw new IllegalArgumentException("El ID no puede ser nulo.");
+	    }
+	    if (id <= 0) {
+	        throw new IllegalArgumentException("El ID debe ser un número positivo.");
+	    }
+
+		return restauranteRepositoryPort.findByIdPropietario(id).orElseThrow(()-> new NullPointerException("No se encontro ningun restaurante con el id: "+id));
+	}
+
 }

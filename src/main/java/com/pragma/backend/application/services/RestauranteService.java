@@ -28,4 +28,9 @@ public class RestauranteService implements CreateRestauranteUseCase,RetrieveRest
 		return retrieveRestauranteUseCase.obtenerRestaurantePorIdPropietario(idPropietario);
 	}
 
+	@Override
+	public Restaurante obtenerRestaurantePorId(Long id) {
+		return retrieveRestauranteUseCase.obtenerRestaurantePorId(id);
+	}
+
 }
