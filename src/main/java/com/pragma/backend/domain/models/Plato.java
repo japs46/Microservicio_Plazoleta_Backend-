@@ -3,6 +3,7 @@ package com.pragma.backend.domain.models;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class Plato {
 
@@ -24,24 +25,22 @@ public class Plato {
 	@NotEmpty(message = "La Categoria no puede ser vacio")
 	private final String categoria;
 	
-	@Schema(hidden = true)
-	private final boolean activo;
-	
-	private final Long idUsuarioPropietario;
+	@NotNull(message = "ID del restaurante no puede ser null")
+	@Min(value = 1,message = "El ID debe ser un número positivo.")
+	private final Long idRestaurante;
 	
 	@Schema(hidden = true)
 	private final Restaurante restaurante;
 
-	public Plato(Long id,String nombre,int precio,String descripcion,String urlImagen,String categoria, boolean activo,
-			Long idUsuarioPropietario,Restaurante restaurante) {
+	public Plato(Long id, String nombre, int precio,String descripcion,String urlImagen,
+			String categoria, Long idRestaurante, Restaurante restaurante) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.descripcion = descripcion;
 		this.urlImagen = urlImagen;
 		this.categoria = categoria;
-		this.activo = activo;
-		this.idUsuarioPropietario = idUsuarioPropietario;
+		this.idRestaurante = idRestaurante;
 		this.restaurante = restaurante;
 	}
 
@@ -69,12 +68,8 @@ public class Plato {
 		return categoria;
 	}
 
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public Long getIdUsuarioPropietario() {
-		return idUsuarioPropietario;
+	public Long getIdRestaurante() {
+		return idRestaurante;
 	}
 
 	public Restaurante getRestaurante() {

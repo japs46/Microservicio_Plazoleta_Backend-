@@ -53,15 +53,15 @@ public class PlatoEntity {
 	}
 
 	public PlatoEntity(Long id, String nombre, int precio, String descripcion, String urlImagen, String categoria,
-			boolean activo, RestauranteEntity restaurante) {
+			RestauranteEntity restaurante) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.descripcion = descripcion;
 		this.urlImagen = urlImagen;
 		this.categoria = categoria;
-		this.activo = activo;
 		this.restauranteEntity = restaurante;
+		this.activo = true;
 	}
 
 	public Long getId() {

@@ -38,7 +38,7 @@ public class RetrieveRestauranteUseCaseImpl implements RetrieveRestauranteUseCas
 	        throw new IllegalArgumentException("El ID debe ser un número positivo.");
 	    }
 
-		return restauranteRepositoryPort.findByIdPropietario(id).orElseThrow(()-> new NullPointerException("No se encontro ningun restaurante con el id: "+id));
+		return restauranteRepositoryPort.findById(id).orElseThrow(()-> new NullPointerException("No se encontro ningun restaurante con el id: "+id));
 	}
 
 }

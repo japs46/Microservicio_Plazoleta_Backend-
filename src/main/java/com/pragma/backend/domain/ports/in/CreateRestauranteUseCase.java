@@ -4,5 +4,5 @@ import com.pragma.backend.domain.models.Restaurante;
 
 public interface CreateRestauranteUseCase {
 
-	public Restaurante createRestaurante(Restaurante restaurante);
+	public Restaurante createRestaurante(Restaurante restaurante,String token);
 }
