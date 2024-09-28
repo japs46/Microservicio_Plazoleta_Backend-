@@ -15,8 +15,8 @@ public class UsuarioFeignClientImpl implements UsuarioExternalServicePort{
 	}
 
 	@Override
-	public Usuario buscarUsuarioPorId(Long id) {
-		return usuarioFeignClient.buscarUsuarioPorId(id);
+	public Usuario buscarUsuarioPorId(Long id,String token) {
+		return usuarioFeignClient.buscarUsuarioPorId(id,token);
 	}
 
 }

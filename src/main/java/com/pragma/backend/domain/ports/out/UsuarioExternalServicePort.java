@@ -4,5 +4,5 @@ import com.pragma.backend.domain.models.Usuario;
 
 public interface UsuarioExternalServicePort {
 
-	public Usuario buscarUsuarioPorId(Long id); 
+	public Usuario buscarUsuarioPorId(Long id,String token); 
 }

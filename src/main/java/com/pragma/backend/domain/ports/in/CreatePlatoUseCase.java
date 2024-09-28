@@ -4,5 +4,5 @@ import com.pragma.backend.domain.models.Plato;
 
 public interface CreatePlatoUseCase {
 
-	public Plato createPlato(Plato plato); 
+	public Plato createPlato(Plato plato,Long idUser); 
 }
