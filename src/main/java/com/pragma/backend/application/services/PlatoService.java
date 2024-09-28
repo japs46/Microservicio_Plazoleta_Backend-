@@ -2,6 +2,7 @@ package com.pragma.backend.application.services;
 
 import org.springframework.stereotype.Service;
 
+import com.pragma.backend.domain.models.CambioEstadoPlato;
 import com.pragma.backend.domain.models.ModificarPlato;
 import com.pragma.backend.domain.models.Plato;
 import com.pragma.backend.domain.ports.in.CreatePlatoUseCase;
@@ -28,13 +29,18 @@ public class PlatoService implements CreatePlatoUseCase,ModifyPlatoUseCase,Retri
 	}
 
 	@Override
-	public Plato modifyPlato(ModificarPlato modificarPlato) {
-		return modifyPlatoUseCase.modifyPlato(modificarPlato);
+	public Plato modifyPlato(ModificarPlato modificarPlato,Long idUser) {
+		return modifyPlatoUseCase.modifyPlato(modificarPlato,idUser);
 	}
 
 	@Override
 	public Plato obtenerPlatoPorId(Long id) {
 		return retrievePlatoUseCase.obtenerPlatoPorId(id);
+	}
+
+	@Override
+	public Plato cambiarEstadoPlato(CambioEstadoPlato cambioEstadoPlato, Long idUser) {
+		return modifyPlatoUseCase.cambiarEstadoPlato(cambioEstadoPlato, idUser);
 	}
 
 }

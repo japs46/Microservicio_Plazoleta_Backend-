@@ -1,7 +1,5 @@
 package com.pragma.backend.infrastructure.entities;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,8 +32,7 @@ public class PlatoEntity {
 	@Column(nullable = false)
 	private final String categoria;
 	
-	@Column(nullable = false)
-	@ColumnDefault("true") 
+	@Column(nullable = false) 
 	private final boolean activo;
 	
 	@ManyToOne
@@ -53,7 +50,7 @@ public class PlatoEntity {
 	}
 
 	public PlatoEntity(Long id, String nombre, int precio, String descripcion, String urlImagen, String categoria,
-			RestauranteEntity restaurante) {
+			boolean activo,RestauranteEntity restaurante) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -61,7 +58,7 @@ public class PlatoEntity {
 		this.urlImagen = urlImagen;
 		this.categoria = categoria;
 		this.restauranteEntity = restaurante;
-		this.activo = true;
+		this.activo = activo;
 	}
 
 	public Long getId() {
@@ -95,6 +92,5 @@ public class PlatoEntity {
 	public RestauranteEntity getRestauranteEntity() {
 		return restauranteEntity;
 	}
-	
-	
+
 }
