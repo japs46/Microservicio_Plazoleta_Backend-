@@ -2,9 +2,12 @@ package com.pragma.backend.infrastructure.adapters;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.pragma.backend.domain.models.Restaurante;
+import com.pragma.backend.domain.models.RestauranteInfo;
 import com.pragma.backend.domain.ports.out.RestauranteRepositoryPort;
 import com.pragma.backend.infrastructure.entities.RestauranteEntity;
 import com.pragma.backend.infrastructure.mappers.RestauranteMapper;
@@ -33,6 +36,13 @@ public class RestauranteRepositoryAdapter implements RestauranteRepositoryPort{
 	@Override
 	public Optional<Restaurante> findById(Long id) {
 		return restauranteEntityRepository.findById(id).map(RestauranteMapper::toDomain);
+	}
+
+	@Override
+	public Page<RestauranteInfo> findAll(Pageable pageable) {
+		return restauranteEntityRepository.findAllByOrderByNombreAsc(pageable)
+				.map(restauranteEntity->new RestauranteInfo(restauranteEntity.getNombre(),
+						restauranteEntity.getUrlLogo()));
 	}
 
 }

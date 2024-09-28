@@ -25,6 +25,7 @@ public class SecurityConfig{
 		http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
+        	.requestMatchers("/api/restaurantes/buscarTodos").hasRole("CLIENTE")
         	.requestMatchers("/api/restaurantes/**").hasRole("ADMIN")
             .requestMatchers("/api/platos/**").hasRole("PROPIETARIO")
             .anyRequest().authenticated()

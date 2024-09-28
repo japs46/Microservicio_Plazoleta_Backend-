@@ -1,8 +1,12 @@
 package com.pragma.backend.application.usecases;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.pragma.backend.domain.models.Restaurante;
+import com.pragma.backend.domain.models.RestauranteInfo;
 import com.pragma.backend.domain.ports.in.RetrieveRestauranteUseCase;
 import com.pragma.backend.domain.ports.out.RestauranteRepositoryPort;
 
@@ -39,6 +43,14 @@ public class RetrieveRestauranteUseCaseImpl implements RetrieveRestauranteUseCas
 	    }
 
 		return restauranteRepositoryPort.findById(id).orElseThrow(()-> new NullPointerException("No se encontro ningun restaurante con el id: "+id));
+	}
+
+	@Override
+	public Page<RestauranteInfo> obtenerTodosLosRestaurantes(int page, int size) {
+
+		Pageable pageable = PageRequest.of(page, size);
+
+		return restauranteRepositoryPort.findAll(pageable);
 	}
 
 }

@@ -2,17 +2,20 @@ package com.pragma.backend.infrastructure.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pragma.backend.application.services.RestauranteService;
 import com.pragma.backend.domain.exceptions.UserNotOwnerException;
 import com.pragma.backend.domain.models.Restaurante;
+import com.pragma.backend.domain.models.RestauranteInfo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -62,6 +65,23 @@ public class RestauranteController {
 			Restaurante restauranteBd = restauranteService.obtenerRestaurantePorIdPropietario(idPropietario);
 					
 			return ResponseEntity.ok(restauranteBd);
+			
+		} catch (Exception e) {
+			LOGGUER.error("Ocurrio un error, descripcion del error: " + e.getMessage());
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+		
+	}
+	
+	@GetMapping("/buscarTodos")
+	public ResponseEntity<?> buscarTodosLosRestaurantes(@RequestParam(defaultValue = "0") int page, 
+	        @RequestParam(defaultValue = "10") int size){
+		try {
+			LOGGUER.info("Inicio busqueda restaurantes");
+			
+			Page<RestauranteInfo> listaRestaurantesPaginada = restauranteService.obtenerTodosLosRestaurantes(page, size);
+					
+			return ResponseEntity.ok(listaRestaurantesPaginada.getContent());
 			
 		} catch (Exception e) {
 			LOGGUER.error("Ocurrio un error, descripcion del error: " + e.getMessage());

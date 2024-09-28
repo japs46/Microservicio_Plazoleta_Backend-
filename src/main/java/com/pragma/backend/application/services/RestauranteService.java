@@ -1,8 +1,10 @@
 package com.pragma.backend.application.services;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.pragma.backend.domain.models.Restaurante;
+import com.pragma.backend.domain.models.RestauranteInfo;
 import com.pragma.backend.domain.ports.in.CreateRestauranteUseCase;
 import com.pragma.backend.domain.ports.in.RetrieveRestauranteUseCase;
 
@@ -31,6 +33,11 @@ public class RestauranteService implements CreateRestauranteUseCase,RetrieveRest
 	@Override
 	public Restaurante obtenerRestaurantePorId(Long id) {
 		return retrieveRestauranteUseCase.obtenerRestaurantePorId(id);
+	}
+
+	@Override
+	public Page<RestauranteInfo> obtenerTodosLosRestaurantes(int page, int size) {
+		return retrieveRestauranteUseCase.obtenerTodosLosRestaurantes(page,size);
 	}
 
 }
