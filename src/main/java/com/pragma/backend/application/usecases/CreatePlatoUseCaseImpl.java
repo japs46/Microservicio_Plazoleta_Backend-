@@ -33,7 +33,7 @@ public class CreatePlatoUseCaseImpl implements CreatePlatoUseCase{
 		}
 		
 		Plato platoRestaurante = new Plato(plato.getId(), plato.getNombre(), plato.getPrecio(),
-				plato.getDescripcion(), plato.getUrlImagen(), plato.getCategoria(), null, restaurante);
+				plato.getDescripcion(), plato.getUrlImagen(), plato.getCategoria(), null,true, restaurante);
 		
 		return platoRepositoryPort.save(platoRestaurante);
 	}

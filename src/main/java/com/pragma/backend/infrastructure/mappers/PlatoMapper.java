@@ -9,13 +9,13 @@ public class PlatoMapper {
         return new Plato(entity.getId(), entity.getNombre(),
         		entity.getPrecio(), entity.getDescripcion(),
         		entity.getUrlImagen(), entity.getCategoria(),
-        		null,RestauranteMapper.toDomain(entity.getRestauranteEntity()));
+        		null,entity.isActivo(),RestauranteMapper.toDomain(entity.getRestauranteEntity()));
     }
 
     public static PlatoEntity toEntity(Plato domain) {
         return new PlatoEntity(domain.getId(), domain.getNombre(),
         		domain.getPrecio(), domain.getDescripcion(),
         		domain.getUrlImagen(), domain.getCategoria(),
-        		RestauranteMapper.toEntity(domain.getRestaurante()));
+        		domain.isActivo(),RestauranteMapper.toEntity(domain.getRestaurante()));
     }
 }

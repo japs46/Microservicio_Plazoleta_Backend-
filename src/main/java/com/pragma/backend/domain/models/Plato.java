@@ -30,10 +30,13 @@ public class Plato {
 	private final Long idRestaurante;
 	
 	@Schema(hidden = true)
+	private final boolean activo;
+	
+	@Schema(hidden = true)
 	private final Restaurante restaurante;
 
 	public Plato(Long id, String nombre, int precio,String descripcion,String urlImagen,
-			String categoria, Long idRestaurante, Restaurante restaurante) {
+			String categoria, Long idRestaurante,boolean activo, Restaurante restaurante) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -41,6 +44,7 @@ public class Plato {
 		this.urlImagen = urlImagen;
 		this.categoria = categoria;
 		this.idRestaurante = idRestaurante;
+		this.activo = activo;
 		this.restaurante = restaurante;
 	}
 
@@ -74,6 +78,10 @@ public class Plato {
 
 	public Restaurante getRestaurante() {
 		return restaurante;
+	}
+
+	public boolean isActivo() {
+		return activo;
 	}
 	
 }
