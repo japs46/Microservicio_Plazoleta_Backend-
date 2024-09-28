@@ -3,6 +3,7 @@ package com.pragma.backend.application.usecases;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.pragma.backend.domain.exceptions.UserNotOwnerException;
 import com.pragma.backend.domain.models.Plato;
 import com.pragma.backend.domain.models.Restaurante;
 import com.pragma.backend.domain.ports.in.CreatePlatoUseCase;
@@ -23,13 +24,16 @@ public class CreatePlatoUseCaseImpl implements CreatePlatoUseCase{
 	}
 
 	@Override
-	public Plato createPlato(Plato plato) {
+	public Plato createPlato(Plato plato, Long idUser) {
 		
-		Restaurante restaurante = retrieveRestauranteUseCase.obtenerRestaurantePorIdPropietario(plato.getIdUsuarioPropietario());
+		Restaurante restaurante = retrieveRestauranteUseCase.obtenerRestaurantePorId(plato.getIdRestaurante());
+		
+		if (idUser != restaurante.getIdUsuarioPropietario()) {
+			throw new UserNotOwnerException("El usuario no es el propietario del restaurante.");
+		}
 		
 		Plato platoRestaurante = new Plato(plato.getId(), plato.getNombre(), plato.getPrecio(),
-				plato.getDescripcion(), plato.getUrlImagen(), plato.getCategoria(),
-				false, plato.getIdUsuarioPropietario(), restaurante);
+				plato.getDescripcion(), plato.getUrlImagen(), plato.getCategoria(), null, restaurante);
 		
 		return platoRepositoryPort.save(platoRestaurante);
 	}

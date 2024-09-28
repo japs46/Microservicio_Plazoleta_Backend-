@@ -19,8 +19,8 @@ public class RestauranteService implements CreateRestauranteUseCase,RetrieveRest
 	}
 
 	@Override
-	public Restaurante createRestaurante(Restaurante restaurante) {
-		return createRestauranteUseCase.createRestaurante(restaurante);
+	public Restaurante createRestaurante(Restaurante restaurante,String token) {
+		return createRestauranteUseCase.createRestaurante(restaurante,token);
 	}
 
 	@Override

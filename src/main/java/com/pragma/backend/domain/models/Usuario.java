@@ -2,8 +2,6 @@ package com.pragma.backend.domain.models;
 
 import java.util.Date;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 public class Usuario {
 
 	private final Long id;
@@ -20,12 +18,12 @@ public class Usuario {
 	
 	private final String correo;
 	
-	private final String claveEncriptada;
+	private final String clave;
 
     private final Rol rol;
 
 	public Usuario(Long id, String nombre, String apellido, String documentoDeIdentidad, String celular,
-			Date fechaNacimiento, String correo, String claveEncriptada,Rol rol) {
+			Date fechaNacimiento, String correo, String clave,Rol rol) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -33,13 +31,8 @@ public class Usuario {
 		this.celular = celular;
 		this.fechaNacimiento = fechaNacimiento;
 		this.correo = correo;
-		this.claveEncriptada = encriptarClave(claveEncriptada);
+		this.clave = clave;
 		this.rol = rol;
-	}
-
-	private String encriptarClave(String clave) {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		return passwordEncoder.encode(clave);
 	}
 
 	public Long getId() {
@@ -70,8 +63,8 @@ public class Usuario {
 		return correo;
 	}
 
-	public String getClaveEncriptada() {
-		return claveEncriptada;
+	public String getClave() {
+		return clave;
 	}
 
 	public Rol getRol() {
@@ -88,7 +81,7 @@ public class Usuario {
                 ", celular='" + celular + '\'' +
                 ", fechaNacimiento=" + fechaNacimiento +
                 ", correo='" + correo + '\'' +
-                ", claveEncriptada='" + claveEncriptada + '\'' +
+                ", claveEncriptada='" + clave + '\'' +
                 ", rol='" + rol + '\'' +
                 '}';
     }

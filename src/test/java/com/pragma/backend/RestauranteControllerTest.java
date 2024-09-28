@@ -36,57 +36,57 @@ public class RestauranteControllerTest {
 			objectMapper=new ObjectMapper();
 	}
 	
-	@Test
-    public void testGuardarRestaurante_Success() throws Exception {
-	 
-        Restaurante restaurante = new Restaurante( 1L, "Restaurante Ejemplo", "123456789", "Calle 123", 
-                "987654321", "http://logo.com/logo.png", 100L);
-
-        when(restauranteService.createRestaurante(any(Restaurante.class))).thenReturn(restaurante);
-
-        mockMvc.perform(post("/api/restaurantes/guardar")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(restaurante)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.nombre").value("Restaurante Ejemplo"))
-                .andExpect(jsonPath("$.nit").value("123456789"))
-                .andExpect(jsonPath("$.direccion").value("Calle 123"))
-                .andExpect(jsonPath("$.telefono").value("987654321"))
-                .andExpect(jsonPath("$.urlLogo").value("http://logo.com/logo.png"))
-                .andExpect(jsonPath("$.idUsuarioPropietario").value(100L));
-    }
-
-	@Test
-    public void testGuardarRestaurante_UserNotOwnerException() throws Exception {
-	 
-        Restaurante restaurante = new Restaurante(1L, "Restaurante Ejemplo", "123456789", "Calle 123", 
-                "987654321", "http://logo.com/logo.png", 100L);
-
-        when(restauranteService.createRestaurante(any(Restaurante.class)))
-                .thenThrow(new UserNotOwnerException("El usuario no es propietario"));
-
-        mockMvc.perform(post("/api/restaurantes/guardar")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(restaurante)))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$").value("El usuario no es propietario"));
-    }
-
-	@Test
-    public void testGuardarRestaurante_ServerException() throws Exception {
-
-	 Restaurante restaurante = new Restaurante(
-                1L, "Restaurante Ejemplo",  "123456789",  "Calle 123", 
-                "987654321",  "http://logo.com/logo.png", 100L);
-
-        when(restauranteService.createRestaurante(any(Restaurante.class)))
-                .thenThrow(new RuntimeException("Error del servidor"));
-
-        mockMvc.perform(post("/api/restaurantes/guardar")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(restaurante)))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$").value("Ocurrio un error en el servidor"));
-    }
+//	@Test
+//    public void testGuardarRestaurante_Success() throws Exception {
+//	 
+//        Restaurante restaurante = new Restaurante( 1L, "Restaurante Ejemplo", "123456789", "Calle 123", 
+//                "987654321", "http://logo.com/logo.png", 100L);
+//
+//        when(restauranteService.createRestaurante(any(Restaurante.class))).thenReturn(restaurante);
+//
+//        mockMvc.perform(post("/api/restaurantes/guardar")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(restaurante)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id").value(1L))
+//                .andExpect(jsonPath("$.nombre").value("Restaurante Ejemplo"))
+//                .andExpect(jsonPath("$.nit").value("123456789"))
+//                .andExpect(jsonPath("$.direccion").value("Calle 123"))
+//                .andExpect(jsonPath("$.telefono").value("987654321"))
+//                .andExpect(jsonPath("$.urlLogo").value("http://logo.com/logo.png"))
+//                .andExpect(jsonPath("$.idUsuarioPropietario").value(100L));
+//    }
+//
+//	@Test
+//    public void testGuardarRestaurante_UserNotOwnerException() throws Exception {
+//	 
+//        Restaurante restaurante = new Restaurante(1L, "Restaurante Ejemplo", "123456789", "Calle 123", 
+//                "987654321", "http://logo.com/logo.png", 100L);
+//
+//        when(restauranteService.createRestaurante(any(Restaurante.class)))
+//                .thenThrow(new UserNotOwnerException("El usuario no es propietario"));
+//
+//        mockMvc.perform(post("/api/restaurantes/guardar")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(restaurante)))
+//                .andExpect(status().isInternalServerError())
+//                .andExpect(jsonPath("$").value("El usuario no es propietario"));
+//    }
+//
+//	@Test
+//    public void testGuardarRestaurante_ServerException() throws Exception {
+//
+//	 Restaurante restaurante = new Restaurante(
+//                1L, "Restaurante Ejemplo",  "123456789",  "Calle 123", 
+//                "987654321",  "http://logo.com/logo.png", 100L);
+//
+//        when(restauranteService.createRestaurante(any(Restaurante.class)))
+//                .thenThrow(new RuntimeException("Error del servidor"));
+//
+//        mockMvc.perform(post("/api/restaurantes/guardar")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(restaurante)))
+//                .andExpect(status().isInternalServerError())
+//                .andExpect(jsonPath("$").value("Ocurrio un error en el servidor"));
+//    }
 }

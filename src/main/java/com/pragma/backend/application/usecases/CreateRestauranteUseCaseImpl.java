@@ -23,10 +23,9 @@ public class CreateRestauranteUseCaseImpl implements CreateRestauranteUseCase{
 	}
 	
 	@Override
-	public Restaurante createRestaurante(Restaurante restaurante) {
+	public Restaurante createRestaurante(Restaurante restaurante,String token) {
 		
-		Usuario usuario = usuarioExternalServicePort.buscarUsuarioPorId(restaurante.getIdUsuarioPropietario());
-		System.err.println(usuario.toString());
+		Usuario usuario = usuarioExternalServicePort.buscarUsuarioPorId(restaurante.getIdUsuarioPropietario(),token);
 		if (!usuario.getRol().equals(Rol.PROPIETARIO)) {
 			throw new UserNotOwnerException("El usuario no es propietario");
 		} 

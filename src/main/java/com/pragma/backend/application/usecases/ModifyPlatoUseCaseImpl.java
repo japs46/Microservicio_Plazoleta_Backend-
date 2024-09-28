@@ -23,8 +23,8 @@ public class ModifyPlatoUseCaseImpl implements ModifyPlatoUseCase{
 				.orElseThrow(()-> new NullPointerException("No se encontro ningun plato con el id: "+modificarPlato.getId()));
 		
 		Plato platoEditado= new Plato(platoBd.getId(), platoBd.getNombre(), modificarPlato.getPrecio(),
-				modificarPlato.getDescripcion(), platoBd.getUrlImagen(), platoBd.getCategoria(), platoBd.isActivo(),
-				platoBd.getIdUsuarioPropietario(), platoBd.getRestaurante());
+				modificarPlato.getDescripcion(), platoBd.getUrlImagen(), platoBd.getCategoria(),
+				null, platoBd.getRestaurante());
 		
 		return platoRepositoryPort.save(platoEditado);
 	}

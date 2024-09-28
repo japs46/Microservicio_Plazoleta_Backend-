@@ -23,8 +23,8 @@ public class PlatoService implements CreatePlatoUseCase,ModifyPlatoUseCase,Retri
 	}
 
 	@Override
-	public Plato createPlato(Plato plato) {
-		return createPlatoUseCase.createPlato(plato);
+	public Plato createPlato(Plato plato,Long idUser) {
+		return createPlatoUseCase.createPlato(plato,idUser);
 	}
 
 	@Override

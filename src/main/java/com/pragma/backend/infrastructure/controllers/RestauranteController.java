@@ -16,6 +16,7 @@ import com.pragma.backend.domain.models.Restaurante;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -34,11 +35,13 @@ public class RestauranteController {
 	@ApiResponse(responseCode = "200", description = "Restaurante guardado exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PostMapping("/guardar")
-	public ResponseEntity<?> guardarRestaurante(@Valid @RequestBody Restaurante restaurante) {
+	public ResponseEntity<?> guardarRestaurante(@Valid @RequestBody Restaurante restaurante,
+			HttpServletRequest request) {
 
 		try {
 			LOGGUER.info("Inicio Creacion de Restaurante");
-			Restaurante restauranteBd = restauranteService.createRestaurante(restaurante);
+			String authHeader = request.getHeader("Authorization");
+			Restaurante restauranteBd = restauranteService.createRestaurante(restaurante,authHeader);
 
 			return ResponseEntity.ok(restauranteBd);
 		} catch (UserNotOwnerException e) {

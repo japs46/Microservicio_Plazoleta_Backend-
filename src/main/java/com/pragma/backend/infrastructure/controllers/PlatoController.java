@@ -12,19 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pragma.backend.application.services.PlatoService;
 import com.pragma.backend.domain.models.ModificarPlato;
 import com.pragma.backend.domain.models.Plato;
+import com.pragma.backend.infrastructure.providers.JwtTokenProvider;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/platos")
 public class PlatoController {
-	
+
 	private Logger LOGGUER = LoggerFactory.getLogger(RestauranteController.class);
 
 	private PlatoService platoService;
-	
+
 	public PlatoController(PlatoService platoService) {
 		this.platoService = platoService;
 	}
@@ -33,26 +35,33 @@ public class PlatoController {
 	@ApiResponse(responseCode = "200", description = "Plato guardado exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PostMapping("/guardar")
-	public ResponseEntity<?> guardarPlato(@Valid @RequestBody Plato plato){
-		
+	public ResponseEntity<?> guardarPlato(@Valid @RequestBody Plato plato, HttpServletRequest request) {
+
 		try {
 			LOGGUER.info("Inicio Creacion de Plato");
-			Plato platoBd = platoService.createPlato(plato);
+			JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+			String authHeader = request.getHeader("Authorization");
+			String token = null;
+			if (authHeader != null && authHeader.startsWith("Bearer ")) {
+				token = authHeader.substring(7);
+			}
+			Long idUser = jwtTokenProvider.extractClaim(token, claims -> claims.get("idUser", Long.class));
+			Plato platoBd = platoService.createPlato(plato,idUser);
 
 			return ResponseEntity.ok(platoBd);
 		} catch (Exception e) {
 			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
-			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: "+e.getMessage());
+			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
 		}
-		
+
 	}
-	
+
 	@Operation(summary = "Modificar un Plato", description = "Modifica un Plato en la base de datos.")
 	@ApiResponse(responseCode = "200", description = "Plato modificado exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PutMapping("/modificar")
-	public ResponseEntity<?> modificarPlato(@Valid @RequestBody ModificarPlato modificarPlato){
-		
+	public ResponseEntity<?> modificarPlato(@Valid @RequestBody ModificarPlato modificarPlato) {
+
 		try {
 			LOGGUER.info("Inicio Modificacion de Plato");
 			Plato platoBd = platoService.modifyPlato(modificarPlato);
@@ -60,8 +69,8 @@ public class PlatoController {
 			return ResponseEntity.ok(platoBd);
 		} catch (Exception e) {
 			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
-			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: "+e.getMessage());
+			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
 		}
-		
+
 	}
 }
