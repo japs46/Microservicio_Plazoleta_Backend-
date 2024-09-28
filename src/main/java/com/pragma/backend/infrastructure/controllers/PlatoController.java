@@ -2,11 +2,15 @@ package com.pragma.backend.infrastructure.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pragma.backend.application.services.PlatoService;
@@ -106,4 +110,21 @@ public class PlatoController {
 		}
 
 	}
+	
+	@GetMapping("/porRestaurante/{idRestaurante}")
+    public ResponseEntity<?> listarPlatosPorRestaurante(
+            @PathVariable Long idRestaurante,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+		try {
+			LOGGUER.info("Inicio Modificacion de Plato");
+	        Page<Plato> listaPlatosPaginada = platoService.obtenerPlatosPorRestaurante(idRestaurante, categoria, page,size);
+	        return ResponseEntity.ok(listaPlatosPaginada.getContent());
+		} catch (Exception e) {
+			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
+			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
+		} 
+			
+    }
 }
