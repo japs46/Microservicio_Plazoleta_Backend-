@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.pragma.backend.domain.models.Usuario;
+import com.pragma.backend.domain.models.UsuarioLogin;
 import com.pragma.backend.infrastructure.adapters.out.UsuarioFeignClient;
 import com.pragma.backend.infrastructure.providers.JwtTokenProvider;
 
@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-        	Usuario usuario = usuarioFeignClient.buscarUsuarioPorCorreo(username);
+        	UsuarioLogin usuario = usuarioFeignClient.buscarUsuarioPorCorreo(username);
         	List<GrantedAuthority> rol = new ArrayList<>();
 			rol.add(new SimpleGrantedAuthority("ROLE_" +usuario.getRol().toString()));
         	

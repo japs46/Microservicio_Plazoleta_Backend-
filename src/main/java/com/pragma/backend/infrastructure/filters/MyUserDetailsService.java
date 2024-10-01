@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.pragma.backend.domain.models.Usuario;
+import com.pragma.backend.domain.models.UsuarioLogin;
 import com.pragma.backend.infrastructure.adapters.out.UsuarioFeignClient;
 
 @Service
@@ -33,7 +33,7 @@ public class MyUserDetailsService implements UserDetailsService{
 		try {
 			LOGGUER.info("Iniciando verificación credenciales");
 			
-			Usuario usuario = usuarioFeignClient.buscarUsuarioPorCorreo(correo);
+			UsuarioLogin usuario = usuarioFeignClient.buscarUsuarioPorCorreo(correo);
 			
 			System.err.println(usuario.toString());
 			System.err.println(usuario.getRol());

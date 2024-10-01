@@ -28,12 +28,15 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/platos")
 public class PlatoController {
 
-	private Logger LOGGUER = LoggerFactory.getLogger(RestauranteController.class);
+	private Logger LOGGUER = LoggerFactory.getLogger(PlatoController.class);
 
 	private PlatoService platoService;
+	
+	private final JwtTokenProvider jwtTokenProvider;
 
-	public PlatoController(PlatoService platoService) {
+	public PlatoController(PlatoService platoService, JwtTokenProvider jwtTokenProvider) {
 		this.platoService = platoService;
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
 	@Operation(summary = "Crear un nuevo Plato", description = "Guarda un nuevo Plato en la base de datos.")
@@ -44,7 +47,6 @@ public class PlatoController {
 
 		try {
 			LOGGUER.info("Inicio Creacion de Plato");
-			JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 			String authHeader = request.getHeader("Authorization");
 			String token = null;
 			if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -69,7 +71,6 @@ public class PlatoController {
 
 		try {
 			LOGGUER.info("Inicio Modificacion de Plato");
-			JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 			String authHeader = request.getHeader("Authorization");
 			String token = null;
 			if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -94,7 +95,6 @@ public class PlatoController {
 
 		try {
 			LOGGUER.info("Inicio Modificacion de Plato");
-			JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
 			String authHeader = request.getHeader("Authorization");
 			String token = null;
 			if (authHeader != null && authHeader.startsWith("Bearer ")) {
