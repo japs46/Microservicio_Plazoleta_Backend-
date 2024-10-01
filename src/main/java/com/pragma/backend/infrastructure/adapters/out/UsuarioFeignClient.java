@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.pragma.backend.domain.models.Usuario;
+import com.pragma.backend.domain.models.UsuarioLogin;
 
 @FeignClient(name = "Microservicio-Usuarios")
 public interface UsuarioFeignClient {
@@ -14,5 +15,5 @@ public interface UsuarioFeignClient {
 	public Usuario buscarUsuarioPorId(@PathVariable Long id, @RequestHeader("Authorization") String token);
 	
 	@GetMapping("/auth/buscarUsuarioLogin/{correo}")
-	public Usuario buscarUsuarioPorCorreo(@PathVariable String correo);
+	public UsuarioLogin buscarUsuarioPorCorreo(@PathVariable String correo);
 }
