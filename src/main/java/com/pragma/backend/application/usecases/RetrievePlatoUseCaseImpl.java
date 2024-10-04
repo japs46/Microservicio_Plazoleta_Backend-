@@ -1,5 +1,7 @@
 package com.pragma.backend.application.usecases;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,15 @@ public class RetrievePlatoUseCaseImpl implements RetrievePlatoUseCase{
 
 	@Override
 	public Plato obtenerPlatoPorId(Long id) {
-		return platoRepositoryPort.findById(id).orElseThrow();
+		
+		if (id == null) {
+	        throw new IllegalArgumentException("El ID no puede ser nulo.");
+	    }
+	    if (id <= 0) {
+	        throw new IllegalArgumentException("El ID debe ser un número positivo.");
+	    }
+		
+		return platoRepositoryPort.findById(id).orElseThrow(()-> new NoSuchElementException("No se encontro ningun plato con el id: "+id));
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.pragma.backend.infrastructure.entities;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +40,10 @@ public class RestauranteEntity {
     
     @OneToMany(mappedBy = "restauranteEntity", cascade = CascadeType.ALL)
     private List<PlatoEntity> platos;
+    
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL)
+	@Schema(hidden = true)
+    private List<PedidoEntity> pedidos;
 
 	public RestauranteEntity() {
 		this.id = null;
