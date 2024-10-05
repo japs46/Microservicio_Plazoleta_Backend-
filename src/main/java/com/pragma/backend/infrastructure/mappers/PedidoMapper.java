@@ -9,13 +9,13 @@ public class PedidoMapper {
         return new Pedido(entity.getId(), entity.getIdCliente(),
         		RestauranteMapper.toDomain(entity.getRestaurante()), 
         		entity.getPlatos().stream().map(DetallePedidoMapper::toDomain).toList(),
-        		entity.getEstado(), entity.getFechaPedido());
+        		entity.getEstado(), entity.getFechaPedido(),entity.getIdEmpleado());
     }
 
     public static PedidoEntity toEntity(Pedido domain) {
         return new PedidoEntity(domain.getId(), domain.getIdCliente(),
         		RestauranteMapper.toEntity(domain.getRestaurante()), 
         		domain.getPlatos().stream().map(DetallePedidoMapper::toEntity).toList(),
-        		domain.getEstado(), domain.getFechaPedido());
+        		domain.getEstado(), domain.getFechaPedido(),domain.getIdEmpleado());
     }
 }

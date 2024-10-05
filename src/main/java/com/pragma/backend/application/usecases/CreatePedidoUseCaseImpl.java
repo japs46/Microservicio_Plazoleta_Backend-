@@ -52,7 +52,7 @@ public class CreatePedidoUseCaseImpl implements CreatePedidoUseCase{
 
 	    List<DetallePedido> platos = mapearYValidarPlatos(requestPedido, restaurante);
 
-	    Pedido pedido = new Pedido(null, requestPedido.getIdCliente(), restaurante, platos, EstadoPedido.PENDIENTE, new Date());
+	    Pedido pedido = new Pedido(null, requestPedido.getIdCliente(), restaurante, platos, EstadoPedido.PENDIENTE, new Date(),null);
 	    return pedidoRepositoryPort.save(pedido);
 	}
 

@@ -58,7 +58,7 @@ public class PedidoRepositoryAdapterTest {
         detallePedido = new DetallePedido(1L, plato, null, 2);
         detallesPedido = List.of(detallePedido);
     	
-        pedido = new Pedido(1L, 1L, restaurante, detallesPedido, EstadoPedido.PENDIENTE, new Date());
+        pedido = new Pedido(1L, 1L, restaurante, detallesPedido, EstadoPedido.PENDIENTE, new Date(),null);
         pedidoEntity = PedidoMapper.toEntity(pedido);
         
     }

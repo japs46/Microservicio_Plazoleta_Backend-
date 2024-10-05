@@ -9,18 +9,23 @@ import com.pragma.backend.domain.models.EstadoPedido;
 import com.pragma.backend.domain.models.Pedido;
 import com.pragma.backend.domain.models.RequestPedido;
 import com.pragma.backend.domain.ports.in.CreatePedidoUseCase;
+import com.pragma.backend.domain.ports.in.ModifyPedidoUseCase;
 import com.pragma.backend.domain.ports.in.RetrievePedidoUseCase;
 
 @Service
-public class PedidoService implements CreatePedidoUseCase,RetrievePedidoUseCase{
+public class PedidoService implements CreatePedidoUseCase,RetrievePedidoUseCase,ModifyPedidoUseCase{
 	
 	private final CreatePedidoUseCase createPedidoUseCase;
 	
 	private final RetrievePedidoUseCase retrievePedidoUseCase;
 	
-	public PedidoService(CreatePedidoUseCase createPedidoUseCase,RetrievePedidoUseCase retrievePedidoUseCase) {
+	private final ModifyPedidoUseCase modifyPedidoUseCase;
+	
+	public PedidoService(CreatePedidoUseCase createPedidoUseCase, RetrievePedidoUseCase retrievePedidoUseCase,
+			ModifyPedidoUseCase modifyPedidoUseCase) {
 		this.createPedidoUseCase = createPedidoUseCase;
 		this.retrievePedidoUseCase = retrievePedidoUseCase;
+		this.modifyPedidoUseCase = modifyPedidoUseCase;
 	}
 
 	@Override
@@ -36,6 +41,11 @@ public class PedidoService implements CreatePedidoUseCase,RetrievePedidoUseCase{
 	@Override
 	public Page<Pedido> obtenerTodosPedidos(EstadoPedido estado,Long idEmpleado, int page, int size) {
 		return retrievePedidoUseCase.obtenerTodosPedidos(estado,idEmpleado, page, size);
+	}
+
+	@Override
+	public Pedido asignarPedido(Long id, Long idEmpleado) {
+		return modifyPedidoUseCase.asignarPedido(id, idEmpleado);
 	}
 
 }

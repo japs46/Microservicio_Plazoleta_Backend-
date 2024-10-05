@@ -42,6 +42,9 @@ public class PedidoEntity {
 	@Column(nullable = false,name = "fecha_pedido")
 	private final Date fechaPedido;
 	
+	@Column(name = "empleado_id")
+	private final Long idEmpleado;
+	
 	public PedidoEntity() {
 		this.id = null;
 		this.idCliente = null;
@@ -49,16 +52,18 @@ public class PedidoEntity {
 		this.platos = null;
 		this.estado = null;
 		this.fechaPedido = new Date();
+		this.idEmpleado = null;
 	}
 
 	public PedidoEntity(Long id, Long idCliente, RestauranteEntity restaurante, List<DetallePedidoEntity> platos,
-			EstadoPedido estado, Date fechaPedido) {
+			EstadoPedido estado, Date fechaPedido,Long idEmpleado) {
 		this.id = id;
 		this.idCliente = idCliente;
 		this.restaurante = restaurante;
 		this.platos = platos;
 		this.estado = estado;
 		this.fechaPedido = fechaPedido;
+		this.idEmpleado = idEmpleado;
 	}
 
 	public Long getId() {
@@ -85,11 +90,15 @@ public class PedidoEntity {
 		return fechaPedido;
 	}
 	
-	@PrePersist // Método para ejecutar antes de persistir el pedido
+	public Long getIdEmpleado() {
+		return idEmpleado;
+	}
+
+	@PrePersist 
     private void asignarPedidoADetalles() {
         if (platos != null) {
             for (DetallePedidoEntity detalle : platos) {
-                detalle.setPedido(this); // Asigna el pedido a cada detalle antes de guardar
+                detalle.setPedido(this); 
             }
         }
     }
