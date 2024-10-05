@@ -62,7 +62,7 @@ public class CreatePedidoUseCaseImplTest {
         
         DetallePedido detallePedido = new DetallePedido(1L, plato, null, 2);
         List<DetallePedido> detallesPedido = List.of(detallePedido);
-        Pedido pedidoBd = new Pedido(1L, 1L, restaurante, detallesPedido, EstadoPedido.PENDIENTE, new Date());
+        Pedido pedidoBd = new Pedido(1L, 1L, restaurante, detallesPedido, EstadoPedido.PENDIENTE, new Date(),null);
         
         when(retrievePedidoUseCase.buscarPedidosPorCliente(1L)).thenReturn(List.of());
         when(retrieveRestauranteUseCase.obtenerRestaurantePorId(1L)).thenReturn(restaurante);
@@ -81,7 +81,7 @@ public class CreatePedidoUseCaseImplTest {
     @Test
     void testCreatePedido_ThrowsException_PedidoEnProceso() {
         List<Pedido> pedidosEnProceso = List.of(
-            new Pedido(1L, 1L, null, null, EstadoPedido.PENDIENTE, new Date())
+            new Pedido(1L, 1L, null, null, EstadoPedido.PENDIENTE, new Date(),null)
         );
 
         when(retrievePedidoUseCase.buscarPedidosPorCliente(1L)).thenReturn(pedidosEnProceso);

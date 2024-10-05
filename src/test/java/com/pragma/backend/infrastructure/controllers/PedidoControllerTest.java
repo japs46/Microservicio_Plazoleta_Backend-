@@ -82,7 +82,7 @@ public class PedidoControllerTest {
         DetallePedido detallePedido = new DetallePedido(1L, plato, null, 2);
         List<DetallePedido> detallesPedido = List.of(detallePedido);
 
-        Pedido pedidoBd = new Pedido(1L, 1L, restaurante, detallesPedido, EstadoPedido.PENDIENTE, new Date());
+        Pedido pedidoBd = new Pedido(1L, 1L, restaurante, detallesPedido, EstadoPedido.PENDIENTE, new Date(),null);
 
         when(pedidoService.createPedido(any(RequestPedido.class),anyString()))
                 .thenReturn(pedidoBd);

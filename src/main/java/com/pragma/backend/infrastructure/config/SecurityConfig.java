@@ -28,6 +28,7 @@ public class SecurityConfig{
         	.requestMatchers("/api/restaurantes/buscarTodos").hasRole("CLIENTE")
         	.requestMatchers("/api/pedidos/guardar").hasRole("CLIENTE")
         	.requestMatchers("/api/pedidos/listar/{estado}").hasRole("EMPLEADO")
+        	.requestMatchers("/api/pedidos/modificar/{id}").hasRole("EMPLEADO")
         	.requestMatchers("/api/platos/porRestaurante/{idRestaurante}").hasRole("CLIENTE")
         	.requestMatchers("/api/restaurantes/**").hasRole("ADMIN")
             .requestMatchers("/api/platos/**").hasRole("PROPIETARIO")

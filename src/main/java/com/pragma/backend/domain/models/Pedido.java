@@ -11,15 +11,17 @@ public class Pedido {
     private final List<DetallePedido> platos; 
     private final EstadoPedido estado;
     private final Date fechaPedido;
+    private final Long idEmpleado;
     
 	public Pedido(Long id, Long idCliente, Restaurante restaurante, List<DetallePedido> platos, EstadoPedido estado,
-			Date fechaPedido) {
+			Date fechaPedido,Long idEmpleado) {
 		this.id = id;
 		this.idCliente = idCliente;
 		this.restaurante = restaurante;
 		this.platos = platos;
 		this.estado = estado;
 		this.fechaPedido = fechaPedido;
+		this.idEmpleado = idEmpleado;
 	}
 
 	public Long getId() {
@@ -45,5 +47,9 @@ public class Pedido {
 	public Date getFechaPedido() {
 		return fechaPedido;
 	}
-    
+
+	public Long getIdEmpleado() {
+		return idEmpleado;
+	}
+	
 }

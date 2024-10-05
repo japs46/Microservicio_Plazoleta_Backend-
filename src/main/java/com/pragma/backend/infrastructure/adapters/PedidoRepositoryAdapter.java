@@ -1,6 +1,7 @@
 package com.pragma.backend.infrastructure.adapters;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,12 @@ public class PedidoRepositoryAdapter implements PedidoRepositoryPort{
 	@Override
 	public Page<Pedido> findAll(Long idEmpleado,EstadoPedido estado,Pageable pageable) {
 		return pedidoEntityRepository.findAllByRestauranteIdAndEstado(idEmpleado,estado,pageable)
+				.map(PedidoMapper::toDomain);
+	}
+
+	@Override
+	public Optional<Pedido> findById(Long id) {
+		return pedidoEntityRepository.findById(id)
 				.map(PedidoMapper::toDomain);
 	}
 

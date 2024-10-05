@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +76,30 @@ public class PedidoController {
 			Page<Pedido> listaPedidosPagindos = pedidoService.obtenerTodosPedidos(estadoPedido,idEmpleado,page, size);
 			
 			return ResponseEntity.ok(listaPedidosPagindos.getContent());
+		} catch (Exception e) {
+			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
+			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
+		}
+
+	}
+	
+	@Operation(summary = "asignar empleado a pedido", description = "asigna un empleado a un pedido en la base de datos.")
+	@ApiResponse(responseCode = "200", description = "empleado asignado a pedido exitosamente")
+	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
+	@PutMapping("/modificar/{id}")
+	public ResponseEntity<?> asignarPedido(@PathVariable Long id, HttpServletRequest request) {
+
+		try {
+			LOGGUER.info("Inicio Creacion de pedido");
+			String authHeader = request.getHeader("Authorization");
+			String token = null;
+			if (authHeader != null && authHeader.startsWith("Bearer ")) {
+				token = authHeader.substring(7);
+			}
+			Long idEmpleado = jwtTokenProvider.extractClaim(token, claims -> claims.get("idUser", Long.class));
+			Pedido pedidoModificado = pedidoService.asignarPedido(id, idEmpleado);
+
+			return ResponseEntity.ok(pedidoModificado);
 		} catch (Exception e) {
 			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
 			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
