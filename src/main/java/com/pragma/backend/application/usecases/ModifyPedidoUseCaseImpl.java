@@ -33,6 +33,10 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
 				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
 		
+		if (pedidoBd.getEstado().equals(EstadoPedido.ENTREGADO)) {
+			throw new IllegalArgumentException("Este pedido ya esta cerrado, por lo tanto no se puede asignar un empleado.");
+		}
+		
 		if (empleadoRestauranteBd.getRestaurante().getId() != pedidoBd.getRestaurante().getId()) {
 			throw new IllegalArgumentException("No puedes asignarte a pedidos de otro restaurante");
 		}
@@ -50,11 +54,28 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
 				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
 
-		Pedido empleadoAsignadoPedido = new Pedido(pedidoBd.getId(), pedidoBd.getIdCliente(),
+		Pedido pedidoListo = new Pedido(pedidoBd.getId(), pedidoBd.getIdCliente(),
 				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.LISTO,
 				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
 		
-		return pedidoRepositoryPort.save(empleadoAsignadoPedido);
+		return pedidoRepositoryPort.save(pedidoListo);
+	}
+
+	@Override
+	public Pedido pedidoEntregado(Long id) {
+		
+		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
+				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
+		
+		if (!pedidoBd.getEstado().equals(EstadoPedido.LISTO)) {
+			throw new RuntimeException("Solo los pedidos que se encuentren en estado listo pueden pasar a estado entregado.");
+		}
+
+		Pedido pedidoEntregado = new Pedido(pedidoBd.getId(), pedidoBd.getIdCliente(),
+				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.ENTREGADO,
+				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
+		
+		return pedidoRepositoryPort.save(pedidoEntregado);
 	}
 
 }
