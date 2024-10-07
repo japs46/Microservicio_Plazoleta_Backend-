@@ -27,6 +27,7 @@ public class SecurityConfig{
         .authorizeHttpRequests(auth -> auth
         	.requestMatchers("/api/restaurantes/buscarTodos").hasRole("CLIENTE")
         	.requestMatchers("/api/pedidos/guardar").hasRole("CLIENTE")
+        	.requestMatchers("/api/pedidos/cancelarPedido/{id}").hasRole("CLIENTE")
         	.requestMatchers("/api/pedidos/listar/{estado}").hasRole("EMPLEADO")
         	.requestMatchers("/api/pedidos/modificar/{id}").hasRole("EMPLEADO")
         	.requestMatchers("/api/pedidos/pedidoListo/{id}").hasRole("EMPLEADO")

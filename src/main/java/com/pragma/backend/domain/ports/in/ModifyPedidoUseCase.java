@@ -9,4 +9,6 @@ public interface ModifyPedidoUseCase {
 	public Pedido pedidoListo(Long id);
 	
 	public Pedido pedidoEntregado(Long id);
+	
+	public Pedido cancelarPedido(Long id, Long idCliente);
 }

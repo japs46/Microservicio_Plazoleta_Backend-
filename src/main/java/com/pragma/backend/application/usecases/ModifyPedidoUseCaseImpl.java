@@ -78,4 +78,25 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 		return pedidoRepositoryPort.save(pedidoEntregado);
 	}
 
+	@Override
+	public Pedido cancelarPedido(Long id, Long idCliente) {
+		
+		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
+				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
+		
+		if (pedidoBd.getIdCliente() != idCliente) {
+			throw new IllegalArgumentException("El pedido que quieres cancelar pertenece a otro cliente.");
+		}
+		
+		if (!pedidoBd.getEstado().equals(EstadoPedido.PENDIENTE)) {
+			throw new RuntimeException("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse.");
+		}
+
+		Pedido pedidoCancelado = new Pedido(pedidoBd.getId(), pedidoBd.getIdCliente(),
+				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.CANCELADO,
+				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
+		
+		return pedidoRepositoryPort.save(pedidoCancelado);
+	}
+
 }
