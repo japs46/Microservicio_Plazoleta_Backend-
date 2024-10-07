@@ -7,4 +7,6 @@ public interface ModifyPedidoUseCase {
 	public Pedido asignarPedido(Long id,Long idEmpleado);
 	
 	public Pedido pedidoListo(Long id);
+	
+	public Pedido pedidoEntregado(Long id);
 }
