@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.pragma.backend.domain.models.EmpleadoRestaurante;
+import com.pragma.backend.domain.models.EstadoPedido;
 import com.pragma.backend.domain.models.Pedido;
 import com.pragma.backend.domain.ports.in.ModifyPedidoUseCase;
 import com.pragma.backend.domain.ports.in.RetrieveEmpleadoRestauranteUseCase;
@@ -37,7 +38,7 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 		}
 		
 		Pedido empleadoAsignadoPedido = new Pedido(pedidoBd.getId(), pedidoBd.getIdCliente(),
-				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), pedidoBd.getEstado(),
+				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.EN_PREPARACION,
 				pedidoBd.getFechaPedido(), idEmpleado);
 		
 		return pedidoRepositoryPort.save(empleadoAsignadoPedido);
