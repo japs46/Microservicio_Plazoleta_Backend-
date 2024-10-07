@@ -58,4 +58,9 @@ public class PedidoService implements CreatePedidoUseCase,RetrievePedidoUseCase,
 		return modifyPedidoUseCase.pedidoEntregado(id);
 	}
 
+	@Override
+	public Pedido cancelarPedido(Long id,Long idCliente) {
+		return modifyPedidoUseCase.cancelarPedido(id,idCliente);
+	}
+
 }

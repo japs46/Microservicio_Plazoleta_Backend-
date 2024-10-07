@@ -125,8 +125,8 @@ public class PedidoController {
 
 	}
 	
-	@Operation(summary = "Notificar pedido listo", description = "Notifica al cliente que su pedido ya esta listo por sms.")
-	@ApiResponse(responseCode = "200", description = "Notificaacion enviada exitosamente")
+	@Operation(summary = "Cambiar estado del pedido a entregado", description = "Modifica el estado del pedido en la base de datos")
+	@ApiResponse(responseCode = "200", description = "estado cambiado exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PutMapping("/pedidoEntregado/{id}")
 	public ResponseEntity<?> pedidoEntregado(@PathVariable Long id) {
@@ -136,6 +136,30 @@ public class PedidoController {
 			Pedido pedidoModificado = pedidoService.pedidoEntregado(id);
 
 			return ResponseEntity.ok(pedidoModificado);
+		} catch (Exception e) {
+			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
+			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
+		}
+
+	}
+	
+	@Operation(summary = "Cancelar pedido", description = "Cambia el estado del pedido a cancelado.")
+	@ApiResponse(responseCode = "200", description = "Pedido cancelado exitosamente")
+	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
+	@PutMapping("/cancelarPedido/{id}")
+	public ResponseEntity<?> cancelarPedido(@PathVariable Long id,HttpServletRequest request) {
+
+		try {
+			LOGGUER.info("Inicio cancelacion pedido.");
+			String authHeader = request.getHeader("Authorization");
+			String token = null;
+			if (authHeader != null && authHeader.startsWith("Bearer ")) {
+				token = authHeader.substring(7);
+			}
+			Long idCliente = jwtTokenProvider.extractClaim(token, claims -> claims.get("idUser", Long.class));
+			Pedido pedidoCancelado = pedidoService.cancelarPedido(id, idCliente);
+
+			return ResponseEntity.ok(pedidoCancelado);
 		} catch (Exception e) {
 			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
 			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
