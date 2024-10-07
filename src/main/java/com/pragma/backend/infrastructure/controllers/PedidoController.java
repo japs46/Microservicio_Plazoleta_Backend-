@@ -106,4 +106,22 @@ public class PedidoController {
 		}
 
 	}
+	
+	@Operation(summary = "Notificar pedido listo", description = "Notifica al cliente que su pedido ya esta listo por sms.")
+	@ApiResponse(responseCode = "200", description = "Notificaacion enviada exitosamente")
+	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
+	@PutMapping("/pedidoListo/{id}")
+	public ResponseEntity<?> pedidoListo(@PathVariable Long id) {
+
+		try {
+			LOGGUER.info("Inicio Creacion de pedido");
+			Pedido pedidoModificado = pedidoService.pedidoListo(id);
+
+			return ResponseEntity.ok(pedidoModificado);
+		} catch (Exception e) {
+			LOGGUER.error("Ocurrio un inconveniente, descripcion del inconveniente: " + e.getMessage());
+			return ResponseEntity.internalServerError().body("Ocurrio un inconveniente: " + e.getMessage());
+		}
+
+	}
 }

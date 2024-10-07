@@ -44,4 +44,17 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 		return pedidoRepositoryPort.save(empleadoAsignadoPedido);
 	}
 
+	@Override
+	public Pedido pedidoListo(Long id) {
+		
+		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
+				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
+
+		Pedido empleadoAsignadoPedido = new Pedido(pedidoBd.getId(), pedidoBd.getIdCliente(),
+				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.LISTO,
+				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
+		
+		return pedidoRepositoryPort.save(empleadoAsignadoPedido);
+	}
+
 }
