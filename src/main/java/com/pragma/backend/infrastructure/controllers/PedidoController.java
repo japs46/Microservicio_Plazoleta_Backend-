@@ -97,7 +97,7 @@ public class PedidoController {
 				token = authHeader.substring(7);
 			}
 			Long idEmpleado = jwtTokenProvider.extractClaim(token, claims -> claims.get("idUser", Long.class));
-			Pedido pedidoModificado = pedidoService.asignarPedido(id, idEmpleado);
+			Pedido pedidoModificado = pedidoService.asignarPedido(id, idEmpleado,authHeader);
 
 			return ResponseEntity.ok(pedidoModificado);
 		} catch (Exception e) {
@@ -111,11 +111,12 @@ public class PedidoController {
 	@ApiResponse(responseCode = "200", description = "Notificaacion enviada exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PutMapping("/pedidoListo/{id}")
-	public ResponseEntity<?> pedidoListo(@PathVariable Long id) {
+	public ResponseEntity<?> pedidoListo(@PathVariable Long id,HttpServletRequest request) {
 
 		try {
 			LOGGUER.info("Inicio cambio estado pedido listo");
-			Pedido pedidoModificado = pedidoService.pedidoListo(id);
+			String authHeader = request.getHeader("Authorization");
+			Pedido pedidoModificado = pedidoService.pedidoListo(id,authHeader);
 
 			return ResponseEntity.ok(pedidoModificado);
 		} catch (Exception e) {
@@ -129,11 +130,12 @@ public class PedidoController {
 	@ApiResponse(responseCode = "200", description = "estado cambiado exitosamente")
 	@ApiResponse(responseCode = "406", description = "No se aceptó la solicitud")
 	@PutMapping("/pedidoEntregado/{id}")
-	public ResponseEntity<?> pedidoEntregado(@PathVariable Long id) {
+	public ResponseEntity<?> pedidoEntregado(@PathVariable Long id,HttpServletRequest request) {
 
 		try {
 			LOGGUER.info("Inicio cambio estado pedido entregado");
-			Pedido pedidoModificado = pedidoService.pedidoEntregado(id);
+			String authHeader = request.getHeader("Authorization");
+			Pedido pedidoModificado = pedidoService.pedidoEntregado(id,authHeader);
 
 			return ResponseEntity.ok(pedidoModificado);
 		} catch (Exception e) {
@@ -157,7 +159,7 @@ public class PedidoController {
 				token = authHeader.substring(7);
 			}
 			Long idCliente = jwtTokenProvider.extractClaim(token, claims -> claims.get("idUser", Long.class));
-			Pedido pedidoCancelado = pedidoService.cancelarPedido(id, idCliente);
+			Pedido pedidoCancelado = pedidoService.cancelarPedido(id, idCliente,authHeader);
 
 			return ResponseEntity.ok(pedidoCancelado);
 		} catch (Exception e) {
