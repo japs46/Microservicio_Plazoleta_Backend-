@@ -44,23 +44,23 @@ public class PedidoService implements CreatePedidoUseCase,RetrievePedidoUseCase,
 	}
 
 	@Override
-	public Pedido asignarPedido(Long id, Long idEmpleado) {
-		return modifyPedidoUseCase.asignarPedido(id, idEmpleado);
+	public Pedido asignarPedido(Long id, Long idEmpleado,String token) {
+		return modifyPedidoUseCase.asignarPedido(id, idEmpleado,token);
 	}
 
 	@Override
-	public Pedido pedidoListo(Long id) {
-		return modifyPedidoUseCase.pedidoListo(id);
+	public Pedido pedidoListo(Long id,String token) {
+		return modifyPedidoUseCase.pedidoListo(id,token);
 	}
 
 	@Override
-	public Pedido pedidoEntregado(Long id) {
-		return modifyPedidoUseCase.pedidoEntregado(id);
+	public Pedido pedidoEntregado(Long id,String token) {
+		return modifyPedidoUseCase.pedidoEntregado(id,token);
 	}
 
 	@Override
-	public Pedido cancelarPedido(Long id,Long idCliente) {
-		return modifyPedidoUseCase.cancelarPedido(id,idCliente);
+	public Pedido cancelarPedido(Long id,Long idCliente,String token) {
+		return modifyPedidoUseCase.cancelarPedido(id,idCliente,token);
 	}
 
 }

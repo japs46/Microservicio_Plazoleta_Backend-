@@ -1,5 +1,6 @@
 package com.pragma.backend.application.usecases;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,10 +8,14 @@ import org.springframework.stereotype.Component;
 
 import com.pragma.backend.domain.models.EmpleadoRestaurante;
 import com.pragma.backend.domain.models.EstadoPedido;
+import com.pragma.backend.domain.models.LogPedido;
 import com.pragma.backend.domain.models.Pedido;
 import com.pragma.backend.domain.ports.in.ModifyPedidoUseCase;
 import com.pragma.backend.domain.ports.in.RetrieveEmpleadoRestauranteUseCase;
 import com.pragma.backend.domain.ports.out.PedidoRepositoryPort;
+import com.pragma.backend.domain.ports.out.TrazabilidadExternalServicePort;
+
+import jakarta.transaction.Transactional;
 
 @Component
 public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
@@ -19,14 +24,19 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 	
 	private final RetrieveEmpleadoRestauranteUseCase retrieveEmpleadoRestauranteUseCase;
 	
+	private final TrazabilidadExternalServicePort trazabilidadExternalServicePort;
+	
 	public ModifyPedidoUseCaseImpl(PedidoRepositoryPort pedidoRepositoryPort,
-			@Qualifier("retrieveEmpleadoRestauranteUseCaseImpl") RetrieveEmpleadoRestauranteUseCase retrieveEmpleadoRestauranteUseCase) {
+			@Qualifier("retrieveEmpleadoRestauranteUseCaseImpl") RetrieveEmpleadoRestauranteUseCase retrieveEmpleadoRestauranteUseCase,
+			TrazabilidadExternalServicePort trazabilidadExternalServicePort) {
 		this.pedidoRepositoryPort = pedidoRepositoryPort;
 		this.retrieveEmpleadoRestauranteUseCase = retrieveEmpleadoRestauranteUseCase;
+		this.trazabilidadExternalServicePort = trazabilidadExternalServicePort;
 	}
 
 	@Override
-	public Pedido asignarPedido(Long id, Long idEmpleado) {
+	@Transactional
+	public Pedido asignarPedido(Long id, Long idEmpleado,String token) {
 		
 		EmpleadoRestaurante empleadoRestauranteBd = retrieveEmpleadoRestauranteUseCase.obtenerEmpleadoRestaurantePorIdEmpleado(idEmpleado);
 		
@@ -45,11 +55,20 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.EN_PREPARACION,
 				pedidoBd.getFechaPedido(), idEmpleado);
 		
+		LogPedido logPedido=crearLogPedido(empleadoAsignadoPedido,pedidoBd.getEstado().toString());
+		
+		LogPedido logPedidoGuardado = trazabilidadExternalServicePort.guardarLog(logPedido, token);
+	    
+	    if (logPedidoGuardado==null) {
+			throw new NoSuchElementException("Se interrumpio la operacion asignar empleado a pedido debido a que no se pudo guardar el log del pedido");
+		}
+		
 		return pedidoRepositoryPort.save(empleadoAsignadoPedido);
 	}
 
 	@Override
-	public Pedido pedidoListo(Long id) {
+	@Transactional
+	public Pedido pedidoListo(Long id,String token) {
 		
 		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
 				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
@@ -58,11 +77,20 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.LISTO,
 				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
 		
+		LogPedido logPedido=crearLogPedido(pedidoListo,pedidoBd.getEstado().toString());
+		
+		LogPedido logPedidoGuardado = trazabilidadExternalServicePort.guardarLog(logPedido, token);
+		
+		if (logPedidoGuardado==null) {
+			throw new NoSuchElementException("Se interrumpio la operacion cambiar estado pedido listo debido a que no se pudo guardar el log del pedido");
+		}
+		
 		return pedidoRepositoryPort.save(pedidoListo);
 	}
 
 	@Override
-	public Pedido pedidoEntregado(Long id) {
+	@Transactional
+	public Pedido pedidoEntregado(Long id,String token) {
 		
 		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
 				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
@@ -75,11 +103,20 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.ENTREGADO,
 				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
 		
+		LogPedido logPedido=crearLogPedido(pedidoEntregado,pedidoBd.getEstado().toString());
+		
+		LogPedido logPedidoGuardado = trazabilidadExternalServicePort.guardarLog(logPedido, token);
+		
+		if (logPedidoGuardado==null) {
+			throw new NoSuchElementException("Se interrumpio la operacion cambiar estado pedido entregado debido a que no se pudo guardar el log del pedido");
+		}
+		
 		return pedidoRepositoryPort.save(pedidoEntregado);
 	}
 
 	@Override
-	public Pedido cancelarPedido(Long id, Long idCliente) {
+	@Transactional
+	public Pedido cancelarPedido(Long id, Long idCliente,String token) {
 		
 		Pedido pedidoBd = pedidoRepositoryPort.findById(id)
 				.orElseThrow(()-> new NoSuchElementException("No se encontro ningun pedido con el id: "+id));
@@ -96,7 +133,20 @@ public class ModifyPedidoUseCaseImpl implements ModifyPedidoUseCase{
 				pedidoBd.getRestaurante(), pedidoBd.getPlatos(), EstadoPedido.CANCELADO,
 				pedidoBd.getFechaPedido(), pedidoBd.getIdEmpleado());
 		
+		LogPedido logPedido=crearLogPedido(pedidoCancelado,pedidoBd.getEstado().toString());
+		
+		LogPedido logPedidoGuardado = trazabilidadExternalServicePort.guardarLog(logPedido, token);
+		
+		if (logPedidoGuardado==null) {
+			throw new NoSuchElementException("Se interrumpio la operacion cambiar estado pedido cancelado debido a que no se pudo guardar el log del pedido");
+		}
+		
 		return pedidoRepositoryPort.save(pedidoCancelado);
+	}
+	
+	private LogPedido crearLogPedido(Pedido pedido,String estadoAnterior) {
+		return new LogPedido(null, pedido.getId(), pedido.getIdCliente(),
+				estadoAnterior, pedido.getEstado().toString(), LocalDateTime.now());
 	}
 
 }
